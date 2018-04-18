@@ -1,0 +1,11 @@
+﻿@{
+    Layout = null;
+}
+
+@foreach (var card in Model)
+{
+    <div class="card">
+        <span onclick="deleteClick(@card.Id)" class="btn btn-danger">Delete</span>
+        @card.Text
+    </div>
+}

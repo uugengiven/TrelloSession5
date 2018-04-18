@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div class="card-holder">
+    <div id="card_div"></div>
+    <input type="text" name="text" id="text" />
+    <button onclick="buttonClick()" class="btn btn-primary">Add</button>
+</div>
+
+
+@section scripts {
+    <script>
+        function buttonClick()
+        {
+            $.ajax({
+                url: '/trello/addcard',
+                method: 'POST',
+                data: { text: $("#text").val() },
+                success: refreshPage
+            });
+        }
+
+        function deleteClick(id)
+        {
+            $.ajax({
+                url: '/trello/deletecard?Id=' + id,
+                method: 'GET',
+                success: refreshPage
+            });
+        }
+
+        function refreshPage()
+        {
+            // clear new card text box
+            $("#text").val("");
+            // download all new cards
+            $.ajax({
+                url: '/trello/cards',
+                method: 'GET',
+                success: drawToCardLocation
+            });
+        }
+
+        function drawToCardLocation(someHTML)
+        {
+            document.getElementById("card_div").innerHTML = someHTML;
+        }
+
+        // document.body.onload = refreshPage; // run this function once the page loads
+        $(refreshPage); // run this function once the page loads (jquery)
+    </script>
+}
